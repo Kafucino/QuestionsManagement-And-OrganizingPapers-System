@@ -149,12 +149,12 @@ public class ShoudongPanel extends JPanel {
                 String ques[] = {"一、选择题\r\n", "二、填空题\r\n", "三、判断题\r\n", "四、名词解释题\r\n", "五、综合题\r\n", "六、论述题\r\n",};
                 String ans[] = {"一、选择题答案\r\n", "二、填空题答案\r\n", "三、判断题答案\r\n", "四、名词解释题答案\r\n", "五、综合题答案\r\n", "六、论述题\r\n",};
                 int RowCount =  selectedListTable.getRowCount();//找到选中题目中一共有多少行
+                int quesno[] = {0, 0, 0, 0, 0, 0};
                 for (int row = 0;row<RowCount;row++) {
                     String Qno = selectedListTableModel.getValueAt(row, 1).toString();// 获得题目的编号
                     int Qtype = Qno.charAt(0) - '0';
                     try {
                         ResultSet rs;
-                        int quesno[] = {0, 0, 0, 0, 0, 0};
                         if (Qtype == 1) {
                             sql = "SELECT * FROM " + table[Qtype - 1] + " WHERE Qno = '" + Qno + "';";
                             rs = con.getRs(sql);

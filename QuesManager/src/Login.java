@@ -32,57 +32,43 @@ public class Login extends JFrame implements ActionListener {
 
         //用户名
         jlb1=new JLabel("用户名：");
-        jlb1.setBounds(100,135,200,18);
+        jlb1.setBounds(450,400,1000,90);
+        jlb1.setFont(new Font("微软雅黑", Font.BOLD, 30));
         panel.add(jlb1);//jp1.add(jlb1);
         //jtf=new JTextField(10);
         jtf = new JTextField();
-        jtf.setBounds(150,135,200,18);
+        jtf.setBounds(600,415,500,60);
+        jtf.setFont(new Font("微软雅黑", Font.BOLD, 30));
         panel.add(jtf);//jp1.add(jtf);
         //密码
-        jlb2=new JLabel("密    码：");
-        jlb2.setBounds(100,165,200,18);
+        jlb2=new JLabel("密   码：");
+        jlb2.setBounds(450,480,1000,90);
+        jlb2.setFont(new Font("微软雅黑", Font.BOLD, 30));
         jpf=new JPasswordField(10);
-        jpf.setBounds(150,165,200,18);
+        jpf.setBounds(600,495,500,60);
+        jpf.setFont(new Font("微软雅黑", Font.BOLD, 30));
         panel.add(jlb2);//jp2.add(jlb2);
         panel.add(jpf);//jp2.add(jpf);
-        //权限
-        jlb3=new JLabel("权    限：");
-        jlb3.setBounds(100,195,200,18);
-        panel.add(jlb3);
-        JPanel jp3 = new JPanel();
-        jp3.setBounds(140,185,250,30);
-        jp3.setBackground(Color.white);
-        jp3.setLayout(new FlowLayout());
-        jrb1=new JRadioButton("管理员",true);
-        jrb1.setBackground(Color.white);
-        jrb2=new JRadioButton("题库员");
-        jrb2.setBackground(Color.white);
-        jrb3 = new JRadioButton("组卷员");
-        jrb3.setBackground(Color.white);
-        bg=new ButtonGroup();
-        bg.add(jrb1);
-        bg.add(jrb2);
-        bg.add(jrb3);
-        jp3.add(jrb1);
-        jp3.add(jrb2);
-        jp3.add(jrb3);
 
         //底下三个按钮
         JPanel jp4 = new JPanel();
-        jp4.setBounds(100,230,200,30);
+        jp4.setBounds(300,600,1000,90);
         jp4.setBackground(Color.white);
         jp4.setLayout(new FlowLayout());
         jb1=new JButton("登录");
         jb1.addActionListener(this);
+        jb1.setFont(new Font("微软雅黑", Font.BOLD, 30));
         jp4.add(jb1);
         jb2=new JButton("重置");
         jb2.addActionListener(this);
+        jb2.setFont(new Font("微软雅黑", Font.BOLD, 30));
         jp4.add(jb2);
         jb3=new JButton("退出");
         jb3.addActionListener(this);
+        jb3.setFont(new Font("微软雅黑", Font.BOLD, 30));
         jp4.add(jb3);
 
-        panel.add(jp3);
+
         panel.add(jp4);
 
         this.getContentPane().add(panel);
@@ -106,45 +92,15 @@ public class Login extends JFrame implements ActionListener {
         {
             if(!jtf.getText().isEmpty() && !jpf.getText().isEmpty())
             {
-                //如果选中管理员登录
-                if(jrb1.isSelected())
+                Dao.queryUser(jtf.getText());
+                //首先判断是否存在该用户，即是否得到了密码
+                if(Dao.role ==null)
                 {
-                    Dao.queryUser("guanliyuan",jtf.getText());
-                    //首先判断是否存在该用户，即是否得到了密码
-                    if(Dao.pwd ==null)
-                    {
-                        this.clear();
-                    }else
-                    {
-                        //调用登录方法
-                        this.guanliyuanlogin();
-                    }
-                }else if(jrb2.isSelected()) //题库员在登录系统
+                    this.clear();
+                }else
                 {
-                    Dao.queryUser("tikuyuan",jtf.getText());
-                    //首先判断是否存在该用户，即是否得到了密码
-                    if(Dao.pwd ==null)
-                    {
-                        this.clear();
-                    }else
-                    {
-                        //调用登录方法
-                        this.tikuyuanlogin();
-                    }
-
-                }else if(jrb3.isSelected()) //组卷员在登录系统
-                {
-                    Dao.queryUser("zujuanyuan",jtf.getText());
-                    //首先判断是否存在该用户，即是否得到了密码
-                    if(Dao.pwd ==null)
-                    {
-                        this.clear();
-                    }else
-                    {
-                        //调用登录方法
-                        this.zujuanyuanlogin();
-                    }
-
+                    //调用登录方法
+                    this.login(Dao.role);
                 }
             }else if(jtf.getText().isEmpty())
             {
@@ -169,7 +125,7 @@ public class Login extends JFrame implements ActionListener {
     }
 
     //超级管理员登录判断方法
-    public void guanliyuanlogin()
+    public void login(String type)
     {
         if(Dao.pwd.equals(jpf.getText()))
         {
@@ -178,8 +134,22 @@ public class Login extends JFrame implements ActionListener {
             this.clear();
             //关闭当前界面
             dispose();
-            //创建一个新界面，适用于超级管理员
-            guanliyuanUI ui =new guanliyuanUI();
+            switch (type){
+                case "guanliyuan":{
+                    guanliyuanUI ui0 =new guanliyuanUI();
+                    break;
+                }
+                case "tikuyuan":{
+                    tikuyuanUI ui1 = new tikuyuanUI();
+                    break;
+                }
+                case "zujuanyuan":{
+                    zujuanyuanUI ui2 = new zujuanyuanUI();
+                    break;
+                }
+            }
+//            //创建一个新界面，适用于超级管理员
+//            guanliyuanUI ui =new guanliyuanUI();
         }else if(jtf.getText().isEmpty()&&jpf.getText().isEmpty())
         {
             JOptionPane.showMessageDialog(null,"请输入用户名和密码！","提示消息",JOptionPane.WARNING_MESSAGE);
