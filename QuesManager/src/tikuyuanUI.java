@@ -37,7 +37,7 @@ public class tikuyuanUI extends JFrame implements ActionListener{
     private String []table={"selection","blank","judge","explanation","comprehensive","discussion"};
     Object []obj={"选择题","填空题","判断题","名词解释","综合题","论述题"};
 
-    private Dao con = new Dao();
+    private Dao con = new Dao("tikuyuan","123456");
     private JScrollPane scrollpane_table,scrollpane_text;
 
     //表格相关
@@ -323,20 +323,20 @@ public class tikuyuanUI extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         String sql;
         if (e.getSource()== menuitem_kemu){
-            kemuUI kemu  = new kemuUI();
+            kemuUI kemu  = new kemuUI(con.conn);
             kemu.setVisible(true);
         }
         else if (e.getSource() == menuitem_point){
-            zhishidianUI zhishidian = new zhishidianUI();
+            zhishidianUI zhishidian = new zhishidianUI(con.conn);
             zhishidian.setVisible(true);
         }
         else if (e.getSource()==menuitem_ques){
             rightPanel.removeAll();
-            rightPanel.add(new QuesPanel(), BorderLayout.CENTER);
+            rightPanel.add(new QuesPanel(con.conn), BorderLayout.CENTER);
             SwingUtilities.updateComponentTreeUI(rightPanel);
         }
         else if (e.getSource() == menuitem_insert){
-            insertQuesUI insert = new insertQuesUI();
+            insertQuesUI insert = new insertQuesUI(con.conn);
         }
         else if(e.getSource()==button_select){
             int i;

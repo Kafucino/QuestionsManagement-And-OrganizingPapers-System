@@ -4,6 +4,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.io.FileWriter;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -25,15 +26,16 @@ public class InfoPanel extends JPanel {
 
     private MTable seletedListTable;
 
-    private Dao con = new Dao();
+    private Dao con;
 
 
     private String []table={"selection","blank","judge","explanation","comprehensive","discussion"};
 
 
 
-    public InfoPanel(MTable seletedListTable) {
+    public InfoPanel(MTable seletedListTable, Connection c) {
         super();
+        con=new Dao(c);
         this.seletedListTable = seletedListTable;
         setBorder(new TitledBorder("试卷信息"));
         setLayout(new BorderLayout());

@@ -5,6 +5,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
@@ -23,35 +24,29 @@ import javax.swing.SwingConstants;
 
 public class QSelectionDialog extends JDialog {
 
-    private JTextField text_QTno1, text_Qno1, text_question;
-    private JTextField text_itemA, text_itemB, text_itemC, text_itemD;
-    private JComboBox combo_diff, combo_point, combo_selection;
+    private JTextField text_QTno1,text_Qno1,text_question;
+    private JTextField text_itemA,text_itemB,text_itemC,text_itemD;
+    private JComboBox combo_diff,combo_point,combo_selection;
     Vector<String> obj_point;
 
     Object[] obj_selection = {"A", "B", "C", "D"};
     Object[] obj_diff = {"易(难度1)", "偏易(难度2)", "适中(难度3)", "偏难(难度4)", "难(难度5)"};
 
-    private Dao con = new Dao();
+    private Dao con;
 
     /**
      * Launch the application
      *
      * @param args
      */
-    public static void main(String args[]) {
-        try {
-            QSelectionDialog dialog = new QSelectionDialog("修改信息", "科目1", "13");
-            dialog.setVisible(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+
 
     /**
      * Create the dialog
      */
-    public QSelectionDialog(String title, String kemu, String Qno) {
+    public  QSelectionDialog(String title, String kemu, String Qno, Connection c ) {
         super();
+        con=new Dao(c);
         setModal(true);
         getContentPane().setLayout(new GridBagLayout());
         setTitle(title);
@@ -92,7 +87,7 @@ public class QSelectionDialog extends JDialog {
         final JButton submitButton = new JButton();
         submitButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if (Qno.equals("")) {
+                if (Qno.equals("")){
                     String point = combo_point.getSelectedItem().toString();
                     int diff = combo_diff.getSelectedIndex() + 1;
                     int k = combo_selection.getSelectedIndex();
@@ -113,12 +108,13 @@ public class QSelectionDialog extends JDialog {
                     } catch (Exception ex) {
                         JOptionPane.showMessageDialog(null, "插入数据失败，请检查数据！", "插入", JOptionPane.OK_OPTION);
                     }
-                } else if (Qno != "") {
+                }
+                else if (Qno!=""){
                     //先删除
-                    String sql1 = "delete from selection where Qno='" + Qno + "';";
-                    try {
+                    String sql1 = "delete from selection where Qno='"+Qno+"';";
+                    try{
                         con.dataUpdate(sql1);
-                    } catch (SQLException ex) {
+                    }catch (SQLException ex){
                         ex.printStackTrace();
                     }
                     //再重新添加新的内容
@@ -155,7 +151,7 @@ public class QSelectionDialog extends JDialog {
         exitButton.setText("退出");
         this.add(exitButton);
 
-        if (Qno != "") {
+        if (Qno!= "") {
             String sql = "select * from selection where Qno='" + Qno + "';";
             System.out.println(sql);
             ResultSet rs1 = con.getRs(sql);

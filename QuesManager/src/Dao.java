@@ -9,33 +9,41 @@ import java.io.File;
 //写一个类，用来与数据库建立连接，并且查询数据
 class Dao {
     // 设定用户名和密码
-    static String username = null;
-    static String pwd = null;
-    static String role = null;
+    String username = null;
+    String pwd = null;
+    String role = null;
 
     //关于数据库操作
-    static PreparedStatement ps = null;
-    static ResultSet rs = null;
-    static Statement stmt = null;
-    static String second = null;
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+    Statement stmt = null;
+    String second = null;
 
     //mySQL连接
     private static final String DRIVERCLASS = "com.mysql.cj.jdbc.Driver";
     private static final String URL = "jdbc:mysql://localhost:3306/project?serverTimezone=GMT&&characterEncoding=utf8&&autoReconnect=true";
 
-    static Connection conn = null;//数据库连接
+    Connection conn = null;//数据库连接
 
-    static {
+    Dao(String user,String pwd)
+    {
         try {
             if (conn == null) {
                 //mysql
                 Class.forName(DRIVERCLASS);
-                conn = DriverManager.getConnection(URL, "root", "123456");
+                conn = DriverManager.getConnection(URL, user, pwd);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
+
+    Dao(Connection c)
+    {
+        conn =c;
+    }
+
+
 
 
     //获取查询结果集
@@ -53,11 +61,11 @@ class Dao {
     }
 
     //关闭数据库资源
-//    public void finalize() throws SQLException {
-//        conn.close();
-//        rs.close();
-//        ps.close();
-//    }
+    public void finalize() throws SQLException {
+        conn.close();
+        rs.close();
+        ps.close();
+    }
 
     //改
     public int dataUpdate(String sql) throws SQLException {
@@ -89,7 +97,7 @@ class Dao {
 
 
     // 向user表查询数据
-    public static void queryUser(String username) {
+    public void queryUser(String username) {
         try {
             ps = conn.prepareStatement("select * from user where userName=? ");
             //ps = conn.prepareStatement("select * from user_info where role=? and userName=? ");

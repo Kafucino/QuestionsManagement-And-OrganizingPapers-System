@@ -39,7 +39,7 @@ public class zujuanyuanUI extends JFrame implements ActionListener,ListSelection
     private String []table={"selection","blank","judge","explanation","comprehensive","discussion"};
     Object []obj={"选择题","填空题","判断题","名词解释","综合题","论述题"};
 
-    private Dao con = new Dao();
+    private Dao con = new Dao("zujuanyuan","123456");
     private JScrollPane scrollpane_table,scrollpane_text;
 
     //表格相关
@@ -575,7 +575,7 @@ public class zujuanyuanUI extends JFrame implements ActionListener,ListSelection
         //手动组卷
         if (e.getSource()==menuitem_new1){
             rightPanel.removeAll();
-            rightPanel.add(new ShoudongPanel(), BorderLayout.CENTER);
+            rightPanel.add(new ShoudongPanel(con.conn), BorderLayout.CENTER);
             SwingUtilities.updateComponentTreeUI(rightPanel);
         }
         //自动组卷

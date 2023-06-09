@@ -5,6 +5,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
@@ -27,7 +28,7 @@ public class QDiscussDialog extends JDialog {
 
     Object[] obj_diff = {"易(难度1)", "偏易(难度2)", "适中(难度3)", "偏难(难度4)", "难(难度5)"};
 
-    private Dao con = new Dao();
+    private Dao con;
 
     /**
      * Launch the application
@@ -46,8 +47,9 @@ public class QDiscussDialog extends JDialog {
     /**
      * Create the dialog
      */
-    public QDiscussDialog(String title,String kemu,String Qno) {
+    public QDiscussDialog(String title, String kemu, String Qno, Connection c) {
         super();
+        con=new Dao(c);
         setModal(true);
         getContentPane().setLayout(new GridBagLayout());
         setTitle(title);

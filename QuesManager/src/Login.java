@@ -68,7 +68,6 @@ public class Login extends JFrame implements ActionListener {
         jb3.setFont(new Font("微软雅黑", Font.BOLD, 30));
         jp4.add(jb3);
 
-
         panel.add(jp4);
 
         this.getContentPane().add(panel);
@@ -92,15 +91,16 @@ public class Login extends JFrame implements ActionListener {
         {
             if(!jtf.getText().isEmpty() && !jpf.getText().isEmpty())
             {
-                Dao.queryUser(jtf.getText());
+                Dao con=new Dao("root","123456");
+                con.queryUser(jtf.getText());
                 //首先判断是否存在该用户，即是否得到了密码
-                if(Dao.role ==null)
+                if(con.role ==null)
                 {
                     this.clear();
                 }else
                 {
                     //调用登录方法
-                    this.login(Dao.role);
+                    this.login(con.role,con.pwd);
                 }
             }else if(jtf.getText().isEmpty())
             {
@@ -125,9 +125,9 @@ public class Login extends JFrame implements ActionListener {
     }
 
     //超级管理员登录判断方法
-    public void login(String type)
+    public void login(String type,String pwd)
     {
-        if(Dao.pwd.equals(jpf.getText()))
+        if(pwd.equals(jpf.getText()))
         {
 //					System.out.println("登录成功");
             JOptionPane.showMessageDialog(null,"登录成功！","提示消息",JOptionPane.WARNING_MESSAGE);
@@ -166,61 +166,5 @@ public class Login extends JFrame implements ActionListener {
             this.clear();
         }
     }
-    //题库员登录判断方法
-    public void tikuyuanlogin()
-    {
-        if(Dao.pwd.equals(jpf.getText()))
-        {
-//					System.out.println("登录成功");
-            JOptionPane.showMessageDialog(null,"登录成功！","提示消息",JOptionPane.WARNING_MESSAGE);
-            this.clear();
-            //关闭当前界面
-            dispose();
-            //创建一个新界面,使用与题库员
-            tikuyuanUI ui = new tikuyuanUI();
-        }else if(jtf.getText().isEmpty()&&jpf.getText().isEmpty())
-        {
-            JOptionPane.showMessageDialog(null,"请输入用户名和密码！","提示消息",JOptionPane.WARNING_MESSAGE);
-        }else if(jtf.getText().isEmpty())
-        {
-            JOptionPane.showMessageDialog(null,"请输入用户名！","提示消息",JOptionPane.WARNING_MESSAGE);
-        }else if(jpf.getText().isEmpty())
-        {
-            JOptionPane.showMessageDialog(null,"请输入密码！","提示消息",JOptionPane.WARNING_MESSAGE);
-        }else
-        {
-            JOptionPane.showMessageDialog(null,"用户名或者密码错误！\n请重新输入","提示消息",JOptionPane.ERROR_MESSAGE);
-            //清空输入框
-            this.clear();
-        }
-    }
 
-    //组卷员登录判断方法
-    public void zujuanyuanlogin()
-    {
-        if(Dao.pwd.equals(jpf.getText()))
-        {
-//					System.out.println("登录成功");
-            JOptionPane.showMessageDialog(null,"登录成功！","提示消息",JOptionPane.WARNING_MESSAGE);
-            this.clear();
-            //关闭当前界面
-            dispose();
-            //创建一个新界面,使用与组卷员
-            zujuanyuanUI ui = new zujuanyuanUI();
-        }else if(jtf.getText().isEmpty()&&jpf.getText().isEmpty())
-        {
-            JOptionPane.showMessageDialog(null,"请输入用户名和密码！","提示消息",JOptionPane.WARNING_MESSAGE);
-        }else if(jtf.getText().isEmpty())
-        {
-            JOptionPane.showMessageDialog(null,"请输入用户名！","提示消息",JOptionPane.WARNING_MESSAGE);
-        }else if(jpf.getText().isEmpty())
-        {
-            JOptionPane.showMessageDialog(null,"请输入密码！","提示消息",JOptionPane.WARNING_MESSAGE);
-        }else
-        {
-            JOptionPane.showMessageDialog(null,"用户名或者密码错误！\n请重新输入","提示消息",JOptionPane.ERROR_MESSAGE);
-            //清空输入框
-            this.clear();
-        }
-    }
 }

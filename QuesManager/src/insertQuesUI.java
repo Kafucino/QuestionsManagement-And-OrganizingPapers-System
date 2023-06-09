@@ -3,6 +3,7 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
@@ -10,7 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 public class insertQuesUI extends JFrame implements ActionListener {
 
-    private Dao con = new Dao();
+    private Dao con ;
 
     //多选菜单里的项目
     Object[] obj = {"选择题", "填空题", "判断题", "名词解释", "综合题", "论述题"};
@@ -21,9 +22,11 @@ public class insertQuesUI extends JFrame implements ActionListener {
 
     JComboBox combo_kemu, combo_Qtype1, combo_diff, combo_point;
 
-    public insertQuesUI() {
+    public insertQuesUI(Connection c ) {
         //主窗体
+
         super("选择题目类型");
+        con=new Dao(c);
         this.getContentPane().setLayout(new BorderLayout());//设置布局管理器
         this.setBounds(400, 300, 300, 150);
         this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -57,14 +60,7 @@ public class insertQuesUI extends JFrame implements ActionListener {
         this.setVisible(true);
     }
 
-    //主窗体的main（）入口
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                new insertQuesUI();
-            }
-        });
-    }
+
 
     /************************辅助函数*********************/
 
@@ -98,22 +94,22 @@ public class insertQuesUI extends JFrame implements ActionListener {
         String kemu = obj_kemu.get(j);
         if (e.getSource() == button_insert) {
             if (i == 0) {
-                QSelectionDialog dialog = new QSelectionDialog("新建选择题",kemu,"");// 创建修改名片的对话框对象
+                QSelectionDialog dialog = new QSelectionDialog("新建选择题",kemu,"",con.conn);// 创建修改名片的对话框对象
                 dialog.setVisible(true);// 设置修改名片的对话框为可见
             } else if (i == 1) {
-                QBlankDialog dialog = new QBlankDialog("新建填空题",kemu,"");// 创建修改名片的对话框对象
+                QBlankDialog dialog = new QBlankDialog("新建填空题",kemu,"",con.conn);// 创建修改名片的对话框对象
                 dialog.setVisible(true);// 设置修改名片的对话框为可见
             } else if (i == 2) {
-                QJudgeDialog dialog = new QJudgeDialog("新建判断题",kemu,"");// 创建修改名片的对话框对象
+                QJudgeDialog dialog = new QJudgeDialog("新建判断题",kemu,"",con.conn);// 创建修改名片的对话框对象
                 dialog.setVisible(true);// 设置修改名片的对话框为可见
             } else if (i == 3) {
-                QExplainationDialog dialog = new QExplainationDialog("新建名词解释题",kemu,"");
+                QExplainationDialog dialog = new QExplainationDialog("新建名词解释题",kemu,"",con.conn);
                 dialog.setVisible(true);
             } else if (i == 4) {
-                QCompreDialog dialog = new QCompreDialog("新建综合题",kemu,"");
+                QCompreDialog dialog = new QCompreDialog("新建综合题",kemu,"",con.conn);
                 dialog.setVisible(true);
             } else if (i == 5) {
-                QDiscussDialog dialog = new QDiscussDialog("新建综合题",kemu,"");
+                QDiscussDialog dialog = new QDiscussDialog("新建综合题",kemu,"",con.conn);
                 dialog.setVisible(true);
             }
         }

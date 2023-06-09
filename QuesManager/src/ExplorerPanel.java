@@ -4,6 +4,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
@@ -22,7 +23,7 @@ import javax.swing.tree.TreeSelectionModel;
 
 public class ExplorerPanel extends JPanel {
 
-    private Dao con = new Dao();
+    private Dao con ;
 
     //按题型浏览
     private MTable cardListTable;
@@ -62,8 +63,9 @@ public class ExplorerPanel extends JPanel {
      */
     public ExplorerPanel(final DefaultTableModel selectedListTableModel,
                          final JTabbedPane infoTabbedPane, final JTextArea infoTextArea,
-                         final JTextArea emailTextArea) {
+                         final JTextArea emailTextArea, Connection c) {
         super();
+        con=new Dao(c);
         setLayout(new BorderLayout());
 
         final JTabbedPane tabbedPane = new JTabbedPane();

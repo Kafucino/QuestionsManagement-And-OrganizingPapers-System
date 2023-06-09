@@ -3,6 +3,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.Vector;
 
@@ -12,7 +13,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class ShoudongPanel extends JPanel {
 
-    private Dao con = new Dao();
+    private Dao con;
 
     private MTable selectedListTable;
 
@@ -22,18 +23,13 @@ public class ShoudongPanel extends JPanel {
 
     private DefaultTableModel selectedListTableModel;
 
-    public static void main() {
-       JFrame frame = new JFrame();
-       ShoudongPanel panel = new ShoudongPanel();
-       frame.add(panel);
-       frame.setVisible(true);
-    }
 
     /**
      * Create the frame
      */
-    public ShoudongPanel() {
+    public ShoudongPanel(Connection c ) {
         super();
+        con=new Dao(c);
         setLayout(new BorderLayout());
         //垂直分割面板
         final JSplitPane workaroundSplitPane = new JSplitPane();// 创建分割面板对象
@@ -131,7 +127,7 @@ public class ShoudongPanel extends JPanel {
         buttonPanel.add(clearButton);
 
         //右上：试卷信息面板
-        final InfoPanel infoPanel = new InfoPanel(selectedListTable);
+        final InfoPanel infoPanel = new InfoPanel(selectedListTable,con.conn);
         sendSplitPane.setRightComponent(infoPanel);
 
 
@@ -155,6 +151,7 @@ public class ShoudongPanel extends JPanel {
                     int Qtype = Qno.charAt(0) - '0';
                     try {
                         ResultSet rs;
+
                         if (Qtype == 1) {
                             sql = "SELECT * FROM " + table[Qtype - 1] + " WHERE Qno = '" + Qno + "';";
                             rs = con.getRs(sql);
@@ -208,7 +205,7 @@ public class ShoudongPanel extends JPanel {
         //下部总：题源管理
         final ExplorerPanel explorerPanel = new ExplorerPanel(
                 selectedListTableModel, infoPanel.getTabbedPane(), infoPanel
-                .getInfoTextArea(), infoPanel.getEmailTextArea());
+                .getInfoTextArea(), infoPanel.getEmailTextArea(),con.conn);
         workaroundSplitPane.setRightComponent(explorerPanel);
 
     }

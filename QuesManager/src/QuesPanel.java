@@ -8,6 +8,8 @@ import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
@@ -17,7 +19,7 @@ import java.util.logging.Logger;
 
 public class QuesPanel extends JPanel {
 
-    private Dao con = new Dao();
+    private Dao con;
 
     //按题型浏览
     private MTable cardListTable;
@@ -52,10 +54,11 @@ public class QuesPanel extends JPanel {
     private DefaultTreeModel infoTreeModel;
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         JFrame frame = new JFrame();
         frame.setSize(new Dimension(900,600));
-        QuesPanel panel = new QuesPanel();
+        String URL = "jdbc:mysql://localhost:3306/project?serverTimezone=GMT&&characterEncoding=utf8&&autoReconnect=true";
+        QuesPanel panel = new QuesPanel(DriverManager.getConnection(URL, "root", "123456"));
         frame.add(panel);
         frame.setVisible(true);
     }
@@ -63,8 +66,9 @@ public class QuesPanel extends JPanel {
     /**
      * Create the panel
      */
-    public QuesPanel() {
+    public QuesPanel(Connection c) {
         super();
+        con=new Dao(c);
         setLayout(new BorderLayout());
 
         final JTabbedPane tabbedPane = new JTabbedPane();
@@ -155,22 +159,22 @@ public class QuesPanel extends JPanel {
                     }
                     //对于不同的题目类型弹出不同的修改框
                     if (type==0){
-                        QSelectionDialog dialog = new QSelectionDialog("修改选择题",kemu,Qno);
+                        QSelectionDialog dialog = new QSelectionDialog("修改选择题",kemu,Qno,con.conn);
                         dialog.setVisible(true);
                     }else if (type ==1){
-                        QBlankDialog dialog = new QBlankDialog("修改填空题",kemu,Qno);
+                        QBlankDialog dialog = new QBlankDialog("修改填空题",kemu,Qno,con.conn);
                         dialog.setVisible(true);
                     }else if (type ==2){
-                        QJudgeDialog dialog = new QJudgeDialog("修改判断题",kemu,Qno);
+                        QJudgeDialog dialog = new QJudgeDialog("修改判断题",kemu,Qno,con.conn);
                         dialog.setVisible(true);
                     }else if (type == 3){
-                        QExplainationDialog dialog = new QExplainationDialog("修改名词解释题",kemu,Qno);
+                        QExplainationDialog dialog = new QExplainationDialog("修改名词解释题",kemu,Qno,con.conn);
                         dialog.setVisible(true);
                     }else if (type == 4){
-                        QCompreDialog dialog = new QCompreDialog("修改综合题",kemu,Qno);
+                        QCompreDialog dialog = new QCompreDialog("修改综合题",kemu,Qno,con.conn);
                         dialog.setVisible(true);
                     }else if (type == 5){
-                        QDiscussDialog dialog = new QDiscussDialog("修改论述题",kemu,Qno);
+                        QDiscussDialog dialog = new QDiscussDialog("修改论述题",kemu,Qno,con.conn);
                         dialog.setVisible(true);
                     }
                     initCardListTable();
@@ -301,22 +305,22 @@ public class QuesPanel extends JPanel {
                     }
                     //对于不同的题目类型弹出不同的修改框
                     if (type==0){
-                        QSelectionDialog dialog = new QSelectionDialog("修改选择题",kemu,Qno);
+                        QSelectionDialog dialog = new QSelectionDialog("修改选择题",kemu,Qno,con.conn);
                         dialog.setVisible(true);
                     }else if (type ==1){
-                        QBlankDialog dialog = new QBlankDialog("修改填空题",kemu,Qno);
+                        QBlankDialog dialog = new QBlankDialog("修改填空题",kemu,Qno,con.conn);
                         dialog.setVisible(true);
                     }else if (type ==2){
-                        QJudgeDialog dialog = new QJudgeDialog("修改判断题",kemu,Qno);
+                        QJudgeDialog dialog = new QJudgeDialog("修改判断题",kemu,Qno,con.conn);
                         dialog.setVisible(true);
                     }else if (type == 3){
-                        QExplainationDialog dialog = new QExplainationDialog("修改名词解释题",kemu,Qno);
+                        QExplainationDialog dialog = new QExplainationDialog("修改名词解释题",kemu,Qno,con.conn);
                         dialog.setVisible(true);
                     }else if (type == 4){
-                        QCompreDialog dialog = new QCompreDialog("修改综合题",kemu,Qno);
+                        QCompreDialog dialog = new QCompreDialog("修改综合题",kemu,Qno,con.conn);
                         dialog.setVisible(true);
                     }else if (type == 5){
-                        QDiscussDialog dialog = new QDiscussDialog("修改论述题",kemu,Qno);
+                        QDiscussDialog dialog = new QDiscussDialog("修改论述题",kemu,Qno,con.conn);
                         dialog.setVisible(true);
                     }
                     initCardListTable();

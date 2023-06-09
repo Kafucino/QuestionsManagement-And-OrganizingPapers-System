@@ -5,6 +5,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -28,27 +29,20 @@ public class UserNewDialog extends JDialog {
 
     private JTextField numTextField;
 
-    private Dao con = new Dao();
+    private Dao con;
 
     /**
      * Launch the application
      *
      * @param args
      */
-    public static void main(String args[]) {
-        try {
-            UserNewDialog dialog = new UserNewDialog("新建",  "");
-            dialog.setVisible(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * Create the dialog
      */
-    public UserNewDialog(String title,String userName) {
+    public UserNewDialog(String title,String userName,Connection c) {
         super();
+         con=new Dao(c);
         setModal(true);
         getContentPane().setLayout(new GridBagLayout());
         setTitle(title);

@@ -8,13 +8,14 @@ import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Vector;
 
 
 public class UserPanel extends JPanel {
 
-    private Dao con = new Dao();
+    private Dao con ;
 
     //按题型浏览
     private MTable cardListTable;
@@ -46,20 +47,12 @@ public class UserPanel extends JPanel {
 
     private DefaultTreeModel infoTreeModel;
 
-    public static void main(String[] args) {
-        JFrame frame = new JFrame();
-        UserPanel user = new UserPanel();
-        frame.add(user);
-        frame.setSize(900,600);
-        frame.setVisible(true);
-    }
-    //private final Dao dao = Dao.getInstance();
-
     /**
      * Create the panel
      */
-    public UserPanel() {
+    public UserPanel(Connection c ) {
         super();
+        con=new Dao(c);
         setLayout(new BorderLayout());
 
         final JTabbedPane tabbedPane = new JTabbedPane();
@@ -132,7 +125,7 @@ public class UserPanel extends JPanel {
         final JButton addUserButton = new JButton("添加用户");
         addUserButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                UserNewDialog dialog = new UserNewDialog("添加新用户", "");// 创建添加名片的对话框对象
+                UserNewDialog dialog = new UserNewDialog("添加新用户", "",con.conn);// 创建添加名片的对话框对象
                     dialog.setVisible(true);// 设置添加名片的对话框为可见
                     initCardListTable();// 刷新名片列表
                 }
@@ -147,7 +140,7 @@ public class UserPanel extends JPanel {
                     String name =  cardListTable.getValueAt(
                             selectedRows[0], 1).toString();// 获得选中名片的编号
                     //System.out.println("当前修改的用户名为:"+ name);
-                    UserNewDialog dialog = new UserNewDialog("添加名片", name);// 创建修改名片的对话框对象
+                    UserNewDialog dialog = new UserNewDialog("添加名片", name,con.conn);// 创建修改名片的对话框对象
                     dialog.setVisible(true);// 设置修改名片的对话框为可见
                     initCardListTable();
                 } else {
