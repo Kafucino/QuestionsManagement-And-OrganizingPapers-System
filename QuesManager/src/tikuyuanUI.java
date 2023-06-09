@@ -1,6 +1,8 @@
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.event.*;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.sql.*;
 import javax.swing.table.*;
 import java.awt.BorderLayout;
@@ -175,6 +177,26 @@ public class tikuyuanUI extends JFrame implements ActionListener{
         radio_Qno=new JRadioButton("按题号");
         text_QTno2=new JTextField("1");
         text_QTno2.setEditable(false);
+        combo_Qtype2.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                String selectedOption = (String) combo_Qtype2.getSelectedItem();
+                // 在此处根据选项更新text_QTno2的内容
+                if (selectedOption.equals("选择题")) {
+                    text_QTno2.setText("1");
+                } else if (selectedOption.equals("填空题")) {
+                    text_QTno2.setText("2");
+                } else if (selectedOption.equals("判断题")) {
+                    text_QTno2.setText("3");
+                }else if (selectedOption.equals("名词解释")) {
+                    text_QTno2.setText("4");
+                }else if (selectedOption.equals("综合题")) {
+                    text_QTno2.setText("5");
+                }else if (selectedOption.equals("论述题")) {
+                    text_QTno2.setText("6");
+                }
+            }
+        });
+
         text_Qno2=new JTextField(6);
         dialog_select.add(radio_Qno);
         dialog_select.add(text_QTno2);
