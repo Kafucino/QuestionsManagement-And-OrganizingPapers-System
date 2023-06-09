@@ -59,9 +59,6 @@ public class QJudgeDialog extends JDialog {
         setLayout(new FlowLayout());
 
         this.add(new JLabel("　  题 号: "));
-        text_QTno1 = new JTextField("3");
-        text_QTno1.setEditable(false);
-        this.add(text_QTno1);
         text_Qno1 = new JTextField(5);
         this.add(text_Qno1);
         this.add(new JLabel("　    难 度:"));
@@ -87,7 +84,7 @@ public class QJudgeDialog extends JDialog {
                     int diff = combo_diff.getSelectedIndex() + 1;
                     String answer_tmp[] = {"是","否"};
                     String answer = answer_tmp[combo_judge.getSelectedIndex()];
-                    String sql = "INSERT INTO Judge VALUES('" + text_QTno1.getText() + text_Qno1.getText() + "','" + text_question.getText() + "','";
+                    String sql = "INSERT INTO Judge VALUES('" + '3'+ text_Qno1.getText() + "','" + text_question.getText() + "','";
                     try{
                         if (text_question.getText().trim().length() == 0) {
                             JOptionPane.showMessageDialog(null, "插入数据不完整！", "插入", JOptionPane.OK_OPTION);

@@ -57,9 +57,6 @@ public class QDiscussDialog extends JDialog {
         setLayout(new FlowLayout());
 
         this.add(new JLabel("　  题 号: "));
-        text_QTno1 = new JTextField("6");
-        text_QTno1.setEditable(false);
-        this.add(text_QTno1);
         text_Qno1 = new JTextField(5);
         this.add(text_Qno1);
         this.add(new JLabel("　    难 度:"));
@@ -83,7 +80,7 @@ public class QDiscussDialog extends JDialog {
                 if (Qno.equals("")){
                     String point = combo_point.getSelectedItem().toString();
                     int diff = combo_diff.getSelectedIndex() + 1;
-                    String sql = "INSERT INTO Discussion VALUES('" + text_QTno1.getText() + text_Qno1.getText() + "','" + text_question.getText() + "','";
+                    String sql = "INSERT INTO Discussion VALUES('" + '6' + text_Qno1.getText() + "','" + text_question.getText() + "','";
                     System.out.println(sql);
                     try{
                         if (text_answer.getText().trim().length()==0 || text_question.getText().trim().length() == 0) {

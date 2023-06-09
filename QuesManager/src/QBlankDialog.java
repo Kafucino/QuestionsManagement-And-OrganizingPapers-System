@@ -60,9 +60,6 @@ public class QBlankDialog extends JDialog {
         setResizable(true);
         setLayout(new FlowLayout());
         this.add(new JLabel("　  题 号: "));
-        text_QTno1 = new JTextField("2");
-        text_QTno1.setEditable(false);
-        this.add(text_QTno1);
         text_Qno1 = new JTextField(10);
         this.add(text_Qno1);
         this.add(new JLabel("　  难 度:"));
@@ -109,7 +106,7 @@ public class QBlankDialog extends JDialog {
                     String point = combo_point.getSelectedItem().toString();
                     int diff = combo_diff.getSelectedIndex() + 1;
                     try{
-                        sql = "INSERT INTO Blank VALUES('" + text_QTno1.getText() + text_Qno1.getText() + "','" + text_question.getText() + "','";
+                        sql = "INSERT INTO Blank VALUES('" + '2' + text_Qno1.getText() + "','" + text_question.getText() + "','";
                         if (text_item1.getText().trim().length() == 0 || text_question.getText().trim().length() == 0)
                             JOptionPane.showMessageDialog(null, "插入数据不完整！", "插入", JOptionPane.OK_OPTION);
                         else {
