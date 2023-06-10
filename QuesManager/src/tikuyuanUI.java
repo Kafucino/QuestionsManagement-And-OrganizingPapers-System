@@ -152,7 +152,8 @@ public class tikuyuanUI extends JFrame implements ActionListener{
         menuitem_insert.addActionListener(this);
         quesManagePanel.add(menuitem_select);//查询题目
         menuitem_select.addActionListener(this);
-
+        quesManagePanel.add(menuitem_num);//查询知识点次数
+        menuitem_num.addActionListener(this);
 
         tabbedPane.addTab("   题库管理   ", null, quesManagePanel, "题库管理");
 
@@ -373,6 +374,56 @@ public class tikuyuanUI extends JFrame implements ActionListener{
             dialog_select.setLocation(this.getX()+this.getWidth()/2-140,this.getY()+this.getHeight()/2-130);
             dialog_select.setVisible(true);
         }
+        //查询知识点次数
+        else if(e.getSource()==menuitem_num){
+            JDialog dialog_num = new JDialog(this, "知识点次数", true);
+            dialog_num.setSize(280,400);
+            dialog_num.setDefaultCloseOperation(HIDE_ON_CLOSE);
+            dialog_num.setResizable(false);
+
+            String sql_num = "SELECT Point, point_num FROM my_view";
+            Statement statement = null;
+            try {
+                statement = con.conn.createStatement();
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+            ResultSet resultSet = null;
+            StringBuilder labelText = new StringBuilder("<html>");
+            try {
+                resultSet = statement.executeQuery(sql_num);
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+            while (true) {
+                try {
+                    if (!resultSet.next()) break;
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+                String point = null;
+                try {
+                    point = resultSet.getString("Point");
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+                int pointNum = 0;
+                try {
+                    pointNum = resultSet.getInt("point_num");
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+                labelText.append(point).append(": ").append(pointNum).append("<br>");
+            }
+
+            labelText.append("</html>");
+
+            JLabel zhishidian=new JLabel(labelText.toString());
+            dialog_num.add(zhishidian);
+            dialog_num.setLayout(new FlowLayout(FlowLayout.LEFT));
+            dialog_num.setLocation(this.getX()+this.getWidth()/2-140,this.getY()+this.getHeight()/2-130);
+            dialog_num.setVisible(true);
+        }
     }
 
 
@@ -447,6 +498,7 @@ public class tikuyuanUI extends JFrame implements ActionListener{
     private JButton menuitem_point = new JButton("添加知识点");
     private JButton menuitem_insert = new JButton("录入新题");
     private JButton menuitem_select = new JButton("查询题目");
+    private JButton menuitem_num=new JButton("知识点使用次数");
 
 
     final JLabel backgroundLabel = new JLabel();
