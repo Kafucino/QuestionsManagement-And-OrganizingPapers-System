@@ -60,13 +60,6 @@ class Dao {
 
     }
 
-    //关闭数据库资源
-    public void finalize() throws SQLException {
-        conn.close();
-        rs.close();
-        ps.close();
-    }
-
     //改
     public int dataUpdate(String sql) throws SQLException {
         Statement statement = conn.createStatement();

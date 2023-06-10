@@ -843,16 +843,16 @@ public class zujuanyuanUI extends JFrame implements ActionListener,ListSelection
                     ansAll+=("\r\n");
                 }
             }
-
             sql = "INSERT INTO paperfinal VALUES("+text_Pno2.getText()+",'"+text_Pname2.getText()+"','"+text_Pdate.getText()+"','"+quesAll+"','"+ansAll+"');";
             con.dataUpdate(sql);
-            sql = "delete from paper where Pno="+text_Pno2.getText()+";";
-            con.dataUpdate(sql);
-            sql = "delete from paperinfo where Pno="+text_Pno2.getText()+";";
-            con.dataUpdate(sql);
+//            sql = "delete from paper where Pno="+text_Pno2.getText()+";";
+//            con.dataUpdate(sql);
+//            sql = "delete from paperinfo where Pno="+text_Pno2.getText()+";";
+//            con.dataUpdate(sql);
             //在面板上展示
             text_paper.append("【试题部分】------------------------------:\r\n"+quesAll);
             text_paper.append("【答案部分】------------------------------:\r\n"+ansAll);
+
             text_paper.setEditable(false);
             rightPanel.removeAll();
             scrollpane_table.setEnabled(false);
