@@ -8,10 +8,7 @@ import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -210,11 +207,34 @@ public class QuesPanel extends JPanel {
                                     selectedRows[j], 1).toString();// 获得名片编号
                             int type = Qno.charAt(0)-'1';
                             String []table={"selection","blank","judge","explanation","comprehensive","discussion"};
-                            String sql = "delete from "+table[i]+" where Qno ='"+Qno+"';";
-                            try{
-                                con.dataUpdate(sql);
-                            }catch (SQLException ex){
-                                ex.printStackTrace();
+//                            String sql = "delete from "+table[type]+" where Qno ='"+Qno+"';";
+                            String callProcedure = "{CALL deleteQuestionByType(?, ?)}";
+                            CallableStatement stmt = null;
+                            try {
+                                stmt = con.conn.prepareCall(callProcedure);
+                            } catch (SQLException ex) {
+                                throw new RuntimeException(ex);
+                            }
+                            try {
+                                stmt.setString(1, table[type]);
+                            } catch (SQLException ex) {
+                                throw new RuntimeException(ex);
+                            }
+                            try {
+                                stmt.setString(2, Qno);
+                            } catch (SQLException ex) {
+                                throw new RuntimeException(ex);
+                            }
+                            try {
+                                stmt.execute();
+                            } catch (SQLException ex) {
+                                throw new RuntimeException(ex);
+                            }
+                            // 关闭连接
+                            try {
+                                stmt.close();
+                            } catch (SQLException ex) {
+                                throw new RuntimeException(ex);
                             }
                         }
                         initCardListTable();// 刷新题目列表
@@ -422,7 +442,7 @@ public class QuesPanel extends JPanel {
             String kemuName = cardTreeNode.getParent().toString().replace("[科目]:","");//获得选中的科目
             String typeName = convertToEnglish(cardTreeNode.getUserObject().toString());//获得选中的题型
             if (kemuName!="root" && typeName!=""){
-                String sql = "select Qno,Question,Point,Difficulty,Times from "+typeName+" where Kemu ='"+kemuName+"';";
+                String sql = "CALL GetQuestionsByTypeAndSubject('"+typeName+"','"+kemuName+"');";
                 System.out.println(sql);
                 cardListTableValueV.addAll(con.selectSomeNote(sql));//检索在所在科目和题型下的题目
             }
